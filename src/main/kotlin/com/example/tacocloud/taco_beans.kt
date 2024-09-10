@@ -7,8 +7,7 @@ enum class Type {
 data class Ingredient(val id: String, val name: String, val type: Type)
 
 data class Taco(
-    var name: String? = null,
-    var ingredients: List<Ingredient> = listOf()
+    var name: String? = null, var ingredients: List<Ingredient> = listOf()
 )
 
 data class TacoOrder(
@@ -20,12 +19,9 @@ data class TacoOrder(
     var ccNumber: String? = null,
     var ccExpiration: String? = null,
     var ccCVV: String? = null,
+    val tacos: MutableList<Taco> = mutableListOf()
 ) {
-    val tacos: List<Taco> by ::_tacos
-
-    private val _tacos: MutableList<Taco> = mutableListOf()
-
     fun addTaco(taco: Taco) {
-        _tacos += taco
+        tacos += taco
     }
 }
