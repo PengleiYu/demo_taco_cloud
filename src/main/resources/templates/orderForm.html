@@ -23,9 +23,9 @@
     <h3>Deliver my taco masterpieces to...</h3>
     <label for="deliveryName">Name: </label>
     <input id="deliveryName" type="text" th:field="*{deliveryName}"/>
-    <span class = "validationError"
-          th:if = "${#fields.hasErrors('deliveryName')}"
-          th:errors = "*{deliveryName}">CC Num Error</span>
+    <span class="validationError"
+          th:if="${#fields.hasErrors('deliveryName')}"
+          th:errors="*{deliveryName}">CC Num Error</span>
     <br/>
 
     <label for="deliveryStreet">Street address: </label>
