@@ -1,5 +1,6 @@
 package com.example.tacocloud
 
+import com.example.tacocloud.data.IngredientRepository
 import jakarta.validation.Valid
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Controller
@@ -11,14 +12,16 @@ import java.util.*
 @Controller
 @RequestMapping("/design")
 @SessionAttributes("tacoOrder")
-class DesignTacoController {
+class DesignTacoController(private val ingredientRepository: IngredientRepository) {
     companion object {
         private val log = LoggerFactory.getLogger(DesignTacoController::class.java)
     }
 
     @ModelAttribute
     fun addIngredientsToModel(model: Model) {
-        INGREDIENT_LIST.groupBy { it.type }
+        ingredientRepository.findAll()
+            .toList()
+            .groupBy { it.type }
             .forEach { model.addAttribute(it.key.name.lowercase(), it.value) }
     }
 

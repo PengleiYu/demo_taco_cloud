@@ -6,6 +6,8 @@ import jakarta.validation.constraints.NotNull
 import jakarta.validation.constraints.Pattern
 import jakarta.validation.constraints.Size
 import org.hibernate.validator.constraints.CreditCardNumber
+import java.io.Serializable
+import java.util.Date
 
 enum class Type {
     WRAP, PROTEIN, VEGGIES, CHEESE, SAUCE
@@ -19,7 +21,9 @@ data class Taco(
     var name: String? = null,
     @field:NotNull
     @field:Size(min = 1, message = "必须选择至少1个配料")
-    var ingredients: List<Ingredient> = listOf()
+    var ingredients: List<Ingredient> = listOf(),
+    var id: Long? = null,
+    val createdAt: Date = Date(),
 )
 
 data class TacoOrder(
@@ -39,8 +43,14 @@ data class TacoOrder(
     var ccExpiration: String? = null,
     @field:Digits(integer = 3, fraction = 0, message = "非法的CVV")
     var ccCVV: String? = null,
-    val tacos: MutableList<Taco> = mutableListOf()
-) {
+    val tacos: MutableList<Taco> = mutableListOf(),
+    var id: Long? = null,
+    var placeAt: Date? = null,
+) : Serializable {
+    companion object {
+        private const val serialVersionUID = 1L
+    }
+
     fun addTaco(taco: Taco) {
         tacos += taco
     }
