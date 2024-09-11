@@ -1,7 +1,9 @@
 package com.example.tacocloud
 
+import jakarta.validation.Valid
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Controller
+import org.springframework.validation.Errors
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.bind.support.SessionStatus
 
@@ -22,7 +24,10 @@ class OrderController {
     fun orderForm(): String = "orderForm"
 
     @PostMapping
-    fun processOrder(order: TacoOrder, sessionStatus: SessionStatus): String {
+    fun processOrder(@Valid order: TacoOrder, errors: Errors, sessionStatus: SessionStatus): String {
+        if (errors.hasErrors()) {
+            return "orderForm"
+        }
         log.info("Order submitted: {}", order)
         sessionStatus.setComplete()
         return "redirect:/"
