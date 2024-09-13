@@ -1,6 +1,6 @@
-package com.example.tacocloud
+package com.example.tacocloud.model
 
-import com.example.tacocloud.data.IngredientRepository
+import com.example.tacocloud.bean.Ingredient
 import org.springframework.core.convert.converter.Converter
 import org.springframework.stereotype.Component
 import kotlin.jvm.optionals.getOrNull

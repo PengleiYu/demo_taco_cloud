@@ -1,6 +1,8 @@
 package com.example.tacocloud
 
-import com.example.tacocloud.data.IngredientRepository
+import com.example.tacocloud.bean.Ingredient
+import com.example.tacocloud.bean.Type
+import com.example.tacocloud.model.IngredientRepository
 import org.springframework.boot.ApplicationRunner
 import org.springframework.boot.CommandLineRunner
 import org.springframework.boot.autoconfigure.SpringBootApplication

@@ -1,4 +1,4 @@
-package com.example.tacocloud
+package com.example.tacocloud.bean
 
 import jakarta.persistence.*
 import jakarta.validation.constraints.*

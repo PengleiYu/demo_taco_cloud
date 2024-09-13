@@ -1,6 +1,7 @@
-package com.example.tacocloud
+package com.example.tacocloud.controller
 
-import com.example.tacocloud.data.OrderRepository
+import com.example.tacocloud.bean.TacoOrder
+import com.example.tacocloud.model.OrderRepository
 import jakarta.validation.Valid
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Controller

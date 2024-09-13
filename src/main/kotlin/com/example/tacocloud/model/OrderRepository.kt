@@ -1,6 +1,6 @@
-package com.example.tacocloud.data
+package com.example.tacocloud.model
 
-import com.example.tacocloud.TacoOrder
+import com.example.tacocloud.bean.TacoOrder
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.CrudRepository
 import java.util.Date
