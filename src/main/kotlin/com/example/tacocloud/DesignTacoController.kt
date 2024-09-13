@@ -22,7 +22,10 @@ class DesignTacoController(private val ingredientRepository: IngredientRepositor
         ingredientRepository.findAll()
             .toList()
             .groupBy { it.type }
-            .forEach { model.addAttribute(it.key.name.lowercase(), it.value) }
+            .forEach {
+                val key = it.key ?: return@forEach
+                model.addAttribute(key.name.lowercase(), it.value)
+            }
     }
 
     @ModelAttribute(name = "tacoOrder")

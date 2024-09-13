@@ -16,6 +16,7 @@ class TacoCloudApplication {
         // it是启动时的命令行原始参数
         return CommandLineRunner {
             println("commandLine: ${Arrays.toString(it)}")
+            // 这里插入，不再需要data.sql了
             repo.save(Ingredient("FLTO", "Flour Tortilla", Type.WRAP))
             repo.save(Ingredient("COTO", "Corn Tortilla", Type.WRAP))
             repo.save(Ingredient("GRBF", "Ground Beef", Type.PROTEIN))

@@ -1,58 +1,44 @@
 package com.example.tacocloud
 
-import jakarta.validation.constraints.Digits
-import jakarta.validation.constraints.NotBlank
-import jakarta.validation.constraints.NotNull
-import jakarta.validation.constraints.Pattern
-import jakarta.validation.constraints.Size
+import jakarta.persistence.*
+import jakarta.validation.constraints.*
 import org.hibernate.validator.constraints.CreditCardNumber
-import org.springframework.data.annotation.Id
-import org.springframework.data.domain.Persistable
-import org.springframework.data.relational.core.mapping.Column
-import org.springframework.data.relational.core.mapping.Table
 import java.io.Serializable
-import java.util.Date
+import java.util.*
 
 enum class Type {
     WRAP, PROTEIN, VEGGIES, CHEESE, SAUCE
 }
 
-@Table
+// JPA会自动根据@Entity注解生成表，不需要schema.sql了
+@Entity
 data class Ingredient(
-    // get方法签名和Persistable的方法冲突了，只能换个名字，再指定列名
-    @Column("ID")
     @field:Id
-    val ingredientId: String,
-    val name: String,
-    val type: Type,
-) : Persistable<String> {
-    override fun getId(): String = ingredientId
+    val id: String? = null,
+    val name: String? = null,
+    val type: Type? = null,
+)
 
-    // 指定id时jdbc会认为是更新，导致无法插入，必须让该方法返回true才能插入
-    override fun isNew(): Boolean = true
-}
-
-data class IngredientRef(val ingredient: String)
-
-@Table
+@Entity
 data class Taco(
     @field:Id
+    @field:GeneratedValue(strategy = GenerationType.AUTO)
     var id: Long? = null,
     @field:NotNull
     @field:Size(min = 5, message = "name必须至少5个字符")
     var name: String? = null,
     @field:NotNull
     @field:Size(min = 1, message = "必须选择至少1个配料")
-    var ingredients: List<IngredientRef> = listOf(),
-    var createdAt: Date? = null,
+    @field:ManyToMany// 该注解会自动生成二者的关联表，不需要手动定义了
+    var ingredients: MutableList<Ingredient>? = mutableListOf(),
+    var createdAt: Date = Date(),
 )
 
-// 可选，默认不加
-@Table("Taco_Cloud_Order")
+@Entity
 data class TacoOrder(
     @field:Id
+    @field:GeneratedValue(strategy = GenerationType.AUTO)
     var id: Long? = null,
-//    @field:Column("customer_name")
     @field:NotBlank(message = "投递地址是必填的")
     var deliveryName: String? = null,
     @field:NotBlank(message = "投递街道是必填的")
@@ -69,8 +55,9 @@ data class TacoOrder(
     var ccExpiration: String? = null,
     @field:Digits(integer = 3, fraction = 0, message = "非法的CVV")
     var ccCVV: String? = null,
+    @field:OneToMany(cascade = [CascadeType.ALL])//必须，这会让Taco表产生TacoOrder表的外键
     val tacos: MutableList<Taco> = mutableListOf(),
-    var placedAt: Date? = null,
+    var placedAt: Date = Date(),
 ) : Serializable {
     companion object {
         private const val serialVersionUID = 1L

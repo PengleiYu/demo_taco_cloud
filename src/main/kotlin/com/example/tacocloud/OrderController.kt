@@ -30,8 +30,6 @@ class OrderController(private val orderRepository: OrderRepository) {
         if (errors.hasErrors()) {
             return "orderForm"
         }
-        order.placedAt = Date()
-        order.tacos.forEach { it.createdAt = Date() }
         orderRepository.save(order)
         log.info("Order submitted: {}", order)
         sessionStatus.setComplete()
