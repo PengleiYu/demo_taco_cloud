@@ -15,15 +15,17 @@ enum class Type {
 
 data class Ingredient(val id: String, val name: String, val type: Type)
 
+data class IngredientRef(val ingredient: String)
+
 data class Taco(
     @field:NotNull
     @field:Size(min = 5, message = "name必须至少5个字符")
     var name: String? = null,
     @field:NotNull
     @field:Size(min = 1, message = "必须选择至少1个配料")
-    var ingredients: List<Ingredient> = listOf(),
+    var ingredients: List<IngredientRef> = listOf(),
     var id: Long? = null,
-    val createdAt: Date = Date(),
+    var createdAt: Date? = null,
 )
 
 data class TacoOrder(

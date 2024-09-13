@@ -1,5 +1,6 @@
 package com.example.tacocloud
 
+import com.example.tacocloud.data.OrderRepository
 import jakarta.validation.Valid
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Controller
@@ -10,7 +11,7 @@ import org.springframework.web.bind.support.SessionStatus
 @Controller
 @RequestMapping("/orders")
 @SessionAttributes("tacoOrder")
-class OrderController {
+class OrderController (private val orderRepository: OrderRepository){
     companion object {
         private val log = LoggerFactory.getLogger(OrderController::class.java)
     }
@@ -28,6 +29,7 @@ class OrderController {
         if (errors.hasErrors()) {
             return "orderForm"
         }
+        orderRepository.save(order)
         log.info("Order submitted: {}", order)
         sessionStatus.setComplete()
         return "redirect:/"
