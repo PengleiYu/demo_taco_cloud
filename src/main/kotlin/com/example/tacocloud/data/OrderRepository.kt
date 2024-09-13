@@ -1,7 +1,6 @@
 package com.example.tacocloud.data
 
 import com.example.tacocloud.TacoOrder
+import org.springframework.data.repository.CrudRepository
 
-interface OrderRepository {
-    fun save(order: TacoOrder): TacoOrder
-}
+interface OrderRepository : CrudRepository<TacoOrder, Long>

@@ -6,6 +6,9 @@ import jakarta.validation.constraints.NotNull
 import jakarta.validation.constraints.Pattern
 import jakarta.validation.constraints.Size
 import org.hibernate.validator.constraints.CreditCardNumber
+import org.springframework.data.annotation.Id
+import org.springframework.data.relational.core.mapping.Column
+import org.springframework.data.relational.core.mapping.Table
 import java.io.Serializable
 import java.util.Date
 
@@ -13,22 +16,34 @@ enum class Type {
     WRAP, PROTEIN, VEGGIES, CHEESE, SAUCE
 }
 
-data class Ingredient(val id: String, val name: String, val type: Type)
+@Table
+data class Ingredient(
+    @field:Id val id: String,
+    val name: String,
+    val type: Type,
+)
 
 data class IngredientRef(val ingredient: String)
 
+@Table
 data class Taco(
+    @field:Id
+    var id: Long? = null,
     @field:NotNull
     @field:Size(min = 5, message = "name必须至少5个字符")
     var name: String? = null,
     @field:NotNull
     @field:Size(min = 1, message = "必须选择至少1个配料")
     var ingredients: List<IngredientRef> = listOf(),
-    var id: Long? = null,
     var createdAt: Date? = null,
 )
 
+// 可选，默认不加
+@Table("Taco_Cloud_Order")
 data class TacoOrder(
+    @field:Id
+    var id: Long? = null,
+//    @field:Column("customer_name")
     @field:NotBlank(message = "投递地址是必填的")
     var deliveryName: String? = null,
     @field:NotBlank(message = "投递街道是必填的")
@@ -46,8 +61,7 @@ data class TacoOrder(
     @field:Digits(integer = 3, fraction = 0, message = "非法的CVV")
     var ccCVV: String? = null,
     val tacos: MutableList<Taco> = mutableListOf(),
-    var id: Long? = null,
-    var placeAt: Date? = null,
+    var placedAt: Date? = null,
 ) : Serializable {
     companion object {
         private const val serialVersionUID = 1L
