@@ -7,6 +7,7 @@ import jakarta.validation.constraints.Pattern
 import jakarta.validation.constraints.Size
 import org.hibernate.validator.constraints.CreditCardNumber
 import org.springframework.data.annotation.Id
+import org.springframework.data.domain.Persistable
 import org.springframework.data.relational.core.mapping.Column
 import org.springframework.data.relational.core.mapping.Table
 import java.io.Serializable
@@ -18,10 +19,18 @@ enum class Type {
 
 @Table
 data class Ingredient(
-    @field:Id val id: String,
+    // get方法签名和Persistable的方法冲突了，只能换个名字，再指定列名
+    @Column("ID")
+    @field:Id
+    val ingredientId: String,
     val name: String,
     val type: Type,
-)
+) : Persistable<String> {
+    override fun getId(): String = ingredientId
+
+    // 指定id时jdbc会认为是更新，导致无法插入，必须让该方法返回true才能插入
+    override fun isNew(): Boolean = true
+}
 
 data class IngredientRef(val ingredient: String)
 
